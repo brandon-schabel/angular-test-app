@@ -14,8 +14,8 @@ FROM nginx:1.21-alpine
 # Create directory for SSL certificates
 RUN mkdir -p /etc/nginx/ssl
 
-# Copy nginx configuration first
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx configuration to the correct location
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy the build output
 COPY --from=build /app/dist/my-angular-app/browser /usr/share/nginx/html
