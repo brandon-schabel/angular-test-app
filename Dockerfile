@@ -17,13 +17,10 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy the build output
 COPY --from=build /app/dist/my-angular-app/browser /usr/share/nginx/html
 
-# Create health check file
-RUN echo "healthy" > /usr/share/nginx/html/health.html
-
 EXPOSE 80
 
-# Add healthcheck
+# Update healthcheck to use curl instead of wget
 HEALTHCHECK --interval=30s --timeout=3s \
-    CMD wget --quiet --tries=1 --spider http://localhost/health || exit 1
+    CMD curl -f http://localhost/health || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]

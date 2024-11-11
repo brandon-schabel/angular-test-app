@@ -1,5 +1,0 @@
-[phases.build]
-cmd = "ng build"
-
-[phases.start]
-cmd = "npx serve -s dist/my-angular-app/browser"
