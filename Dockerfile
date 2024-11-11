@@ -11,16 +11,20 @@ RUN npm run build
 # Stage 2: Serve the app with NGINX
 FROM nginx:1.21-alpine
 
+# Create directory for SSL certificates
+RUN mkdir -p /etc/nginx/ssl
+
 # Copy nginx configuration first
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy the build output
 COPY --from=build /app/dist/my-angular-app/browser /usr/share/nginx/html
 
-EXPOSE 80
+# Expose both HTTP and HTTPS ports
+EXPOSE 80 443
 
-# Update healthcheck to use curl instead of wget
+# Update healthcheck to use https
 HEALTHCHECK --interval=30s --timeout=3s \
-    CMD curl -f http://localhost/health || exit 1
+    CMD curl -f -k https://localhost/health || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
