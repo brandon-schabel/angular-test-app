@@ -23,8 +23,8 @@ COPY --from=build /app/dist/my-angular-app/browser /usr/share/nginx/html
 # Expose both HTTP and HTTPS ports
 EXPOSE 80 443
 
-# Update healthcheck to use https
+# Update healthcheck to use http instead of https
 HEALTHCHECK --interval=30s --timeout=3s \
-    CMD curl -f -k https://localhost/health || exit 1
+    CMD curl -f http://localhost/health || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
